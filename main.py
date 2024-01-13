@@ -38,7 +38,7 @@ def main():
     cell_size_y = (win.height - 2 * margin) / num_rows
     
     m = Maze(margin,margin,num_rows, num_cols,cell_size_x,cell_size_y,win)
-    
+    #m._break_walls_r(0,0)
     win.wait_for_close()
 
 main()
