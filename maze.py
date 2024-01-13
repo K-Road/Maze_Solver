@@ -29,6 +29,7 @@ class Maze:
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls_r(0,0)
+        self._reset_cells_visited()
         
 
     def _create_cells(self):
@@ -103,13 +104,16 @@ class Maze:
             #self._cells[i][j].draw_move(self._cells[to_visit[direction][0]],[to_visit[direction][1]])
             self._break_walls_r(next_cell[0],next_cell[1])
             
-        
+    def _reset_cells_visited(self):
+        for col in self._cells:
+            for cell in col:
+                cell.visited = False
 
     def _animate(self):
         if self._win is None:
             return
         self._win.redraw()
-        time.sleep(0.005)
+        time.sleep(0.0005)
 
         
             
