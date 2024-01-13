@@ -31,8 +31,8 @@ def main():
   #  c1.draw_move(c2)
     x1 = 1
     y1 = 1
-    num_rows = 10
-    num_cols = 10
+    num_rows = 20  #44 max
+    num_cols = 20 #44 max
     margin = 10
     cell_size_x = (win.width - 2 * margin) / num_cols
     cell_size_y = (win.height - 2 * margin) / num_rows
