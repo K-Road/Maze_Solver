@@ -26,6 +26,9 @@ class Maze:
         if seed:
             random.seed(seed)
 
+        self.DIRECTIONS_LRTB = ["west", "east", "north", "south"]
+        self.DIRECTIONS_RLBT = ["east", "west", "south", "north"]
+
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls_r(0,0)
@@ -120,51 +123,40 @@ class Maze:
         if method is None:
             method = "LRTB"
         #decide which direction is free, default choose LRTB
-        if method.upper() == "LRTB":
-            #check directions (west, east, north, south order)  
-            directions = ["west", "east", "north", "south"]
-
-        if method.upper() == "RLBT":
-            #check directions (East, west, south, north order)        
-            directions = ["east", "west", "south", "north"]
+        directions = self.DIRECTIONS_LRTB if method.upper() == "LRTB" else self.DIRECTIONS_RLBT
 
         for direction in directions:
             if getattr(self, f"_solve_r_{direction.lower()}")(i, j, method):
                 return True
         #no directions
         return False
-        
+    
     def _solve_r_east(self,i,j,method):
-        if i < self._num_cols-1 and self._cells[i+1][j].visited == False and self._cells[i][j].has_right_wall == False:
-            self._cells[i][j].draw_move(self._cells[i+1][j])
-            if self._solve_r(i+1,j,method):
-                return True
-            else:
-                self._cells[i][j].draw_move(self._cells[i+1][j],True)
+        return self._solve_r_direction(i,j,method, 1, 0, 'has_right_wall')
 
     def _solve_r_west(self,i,j,method):
-        if i > 0 and self._cells[i-1][j].visited == False and self._cells[i][j].has_left_wall == False:
-            self._cells[i][j].draw_move(self._cells[i-1][j])
-            if self._solve_r(i-1,j,method):
-                return True
-            else:
-                self._cells[i][j].draw_move(self._cells[i-1][j],True)
+        return self._solve_r_direction(i,j,method, -1, 0, 'has_left_wall')
 
     def _solve_r_north(self,i,j,method):
-        if j > 0 and self._cells[i][j-1].visited == False and self._cells[i][j].has_top_wall == False:
-            self._cells[i][j].draw_move(self._cells[i][j-1])
-            if self._solve_r(i,j-1,method):
-                return True
-            else:
-                self._cells[i][j].draw_move(self._cells[i][j-1],True)        
+        return self._solve_r_direction(i,j,method, 0, -1, 'has_top_wall')       
 
     def _solve_r_south(self,i,j,method):
-        if j < self._num_rows-1 and self._cells[i][j+1].visited == False and self._cells[i][j].has_bottom_wall == False:
-            self._cells[i][j].draw_move(self._cells[i][j+1])
-            if self._solve_r(i,j+1,method):
+        return self._solve_r_direction(i,j,method, 0, 1, 'has_bottom_wall')
+
+    def _solve_r_direction(self, i, j, method, delta_i, delta_j, has_wall_attr):
+        new_i, new_j = i + delta_i, j + delta_j
+
+        if (0 <= new_i < self._num_cols) and (0 <= new_j < self._num_rows) and not self._cells[new_i][new_j].visited and \
+            not getattr(self._cells[i][j], has_wall_attr):
+            
+            self._cells[i][j].draw_move(self._cells[new_i][new_j])
+
+            if self._solve_r(new_i,new_j,method):
                 return True
             else:
-                self._cells[i][j].draw_move(self._cells[i][j+1],True)
+                self._cells[i][j].draw_move(self._cells[new_i][new_j],True)
+        return False
+
 
     def _solve_r_rand(self,i,j):
         self._animate()

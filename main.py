@@ -32,8 +32,8 @@ def main():
   #  c1.draw_move(c2)
     x1 = 1
     y1 = 1
-    num_rows = 15  #44 max
-    num_cols = 15 #44 max
+    num_rows = 10  #44 max
+    num_cols = 10 #44 max
     margin = 10
     cell_size_x = (win.width - 2 * margin) / num_cols
     cell_size_y = (win.height - 2 * margin) / num_rows
@@ -47,7 +47,7 @@ def main():
     maze_create_time = maze_create_end_time - maze_create_start_time
     
     print(f"Maze created in {maze_create_time}")
-    time.sleep(0.05)
+    time.sleep(0.0005)
 
     #Test 1
     maze_solve_start = time.time()
