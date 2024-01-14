@@ -32,14 +32,15 @@ def main():
   #  c1.draw_move(c2)
     x1 = 1
     y1 = 1
-    num_rows = 10  #44 max
-    num_cols = 10 #44 max
+    num_rows = 15  #44 max
+    num_cols = 15 #44 max
     margin = 10
     cell_size_x = (win.width - 2 * margin) / num_cols
     cell_size_y = (win.height - 2 * margin) / num_rows
     #seed = 10
     method = None
 
+   
     maze_create_start_time = time.time()
     m = Maze(margin,margin,num_rows, num_cols,cell_size_x,cell_size_y,win)
     maze_create_end_time = time.time()
@@ -48,8 +49,9 @@ def main():
     print(f"Maze created in {maze_create_time}")
     time.sleep(0.05)
 
+    #Test 1
     maze_solve_start = time.time()
-    is_solveable = True #m.solve(method)
+    is_solveable = m.solve()
     maze_solve_end = time.time()
     maze_solve_time = maze_solve_end - maze_solve_start
     
@@ -63,7 +65,7 @@ def main():
     m._reset_cells_visited()
     method = "RLBT"
     maze_solve_start = time.time()
-    is_solveable = True #m.solve(method)
+    is_solveable = m.solve(method)
     maze_solve_end = time.time()
     maze_solve_time = maze_solve_end - maze_solve_start
     
