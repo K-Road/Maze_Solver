@@ -121,36 +121,18 @@ class Maze:
             method = "LRTB"
         #decide which direction is free, default choose LRTB
         if method.upper() == "LRTB":
-            #check L (West)
-            if self._solve_r_west(i,j,method):
-                return True            
-            #check R (East)
-            if self._solve_r_east(i,j,method):
-                return True
-            #check T (North)
-            if self._solve_r_north(i,j,method):
-                return True              
-            #check B (South)
-            if self._solve_r_south(i,j,method):
-                return True                      
-            #no direction found
-            return False
-        
+            #check directions (west, east, north, south order)  
+            directions = ["west", "east", "north", "south"]
+
         if method.upper() == "RLBT":
-            #check R (East)
-            if self._solve_r_east(i,j,method):
+            #check directions (East, west, south, north order)        
+            directions = ["east", "west", "south", "north"]
+
+        for direction in directions:
+            if getattr(self, f"_solve_r_{direction.lower()}")(i, j, method):
                 return True
-            #check L (West)
-            if self._solve_r_west(i,j,method):
-                return True
-            #check B (South)
-            if self._solve_r_south(i,j,method):
-                return True            
-            #check T (North)
-            if self._solve_r_north(i,j,method):
-                return True                                      
-            #no direction found
-            return False
+        #no directions
+        return False
         
     def _solve_r_east(self,i,j,method):
         if i < self._num_cols-1 and self._cells[i+1][j].visited == False and self._cells[i][j].has_right_wall == False:
