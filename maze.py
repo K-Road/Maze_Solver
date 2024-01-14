@@ -31,8 +31,6 @@ class Maze:
         self._break_walls_r(0,0)
         self._reset_cells_visited()
 
-        time.sleep(0.5)
-        self._solve_r(0,0)
         
 
     def _create_cells(self):
@@ -154,7 +152,10 @@ class Maze:
                 self._cells[i][j].draw_move(self._cells[i][j+1],True)
         #no direction found
         return False
-
+    
+    def solve(self):
+        return self._solve_r(0,0)
+    
     def _animate(self):
         if self._win is None:
             return
