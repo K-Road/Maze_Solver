@@ -1,6 +1,7 @@
 from graphics import Window, Line, Point
 from cell import Cell
 from maze import Maze
+import time
 
 def main():
     win = Window(800, 600)
@@ -36,9 +37,24 @@ def main():
     margin = 10
     cell_size_x = (win.width - 2 * margin) / num_cols
     cell_size_y = (win.height - 2 * margin) / num_rows
-    
+    #seed = 10
+
+    maze_create_start_time = time.time()
     m = Maze(margin,margin,num_rows, num_cols,cell_size_x,cell_size_y,win)
+    maze_create_end_time = time.time()
+    maze_create_time = maze_create_end_time - maze_create_start_time
     #m._break_walls_r(0,0)
+    print(f"Maze created in {maze_create_time}")
+    time.sleep(0.05)
+    maze_solve_start = time.time()
+    is_solveable = m.solve()
+    maze_solve_end = time.time()
+    maze_solve_time = maze_solve_end - maze_solve_start
+    if not is_solveable:
+        print("Maze cannot be solved")
+    else:
+        print(f"Maze solved in {maze_solve_time}") 
+
     win.wait_for_close()
 
 main()
