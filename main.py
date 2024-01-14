@@ -5,7 +5,7 @@ import time
 
 def main():
     win = Window(800, 600)
-    line1 = Line(Point(1,1),Point(200,200))
+    #line1 = Line(Point(1,1),Point(200,200))
     #win.draw_line(Line(Point(10,10),Point(400,100)),"red")
   #  win.draw_line(line1, "red")
 
@@ -32,29 +32,59 @@ def main():
   #  c1.draw_move(c2)
     x1 = 1
     y1 = 1
-    num_rows = 20  #44 max
-    num_cols = 20 #44 max
+    num_rows = 10  #44 max
+    num_cols = 10 #44 max
     margin = 10
     cell_size_x = (win.width - 2 * margin) / num_cols
     cell_size_y = (win.height - 2 * margin) / num_rows
     #seed = 10
+    method = None
 
     maze_create_start_time = time.time()
     m = Maze(margin,margin,num_rows, num_cols,cell_size_x,cell_size_y,win)
     maze_create_end_time = time.time()
     maze_create_time = maze_create_end_time - maze_create_start_time
-    #m._break_walls_r(0,0)
+    
     print(f"Maze created in {maze_create_time}")
     time.sleep(0.05)
+
     maze_solve_start = time.time()
-    is_solveable = m.solve()
+    is_solveable = True #m.solve(method)
     maze_solve_end = time.time()
     maze_solve_time = maze_solve_end - maze_solve_start
+    
     if not is_solveable:
         print("Maze cannot be solved")
     else:
         print(f"Maze solved in {maze_solve_time}") 
-
+      
+    #Test 2
+    time.sleep(0.05)
+    m._reset_cells_visited()
+    method = "RLBT"
+    maze_solve_start = time.time()
+    is_solveable = True #m.solve(method)
+    maze_solve_end = time.time()
+    maze_solve_time = maze_solve_end - maze_solve_start
+    
+    if not is_solveable:
+        print("Maze cannot be solved")
+    else:
+        print(f"Maze solved in {maze_solve_time}")
+   
+    #Test 3
+    time.sleep(0.05)
+    m._reset_cells_visited()
+    method = "RAND"
+    maze_solve_start = time.time()
+    is_solveable = m.solve(method)
+    maze_solve_end = time.time()
+    maze_solve_time = maze_solve_end - maze_solve_start
+    
+    if not is_solveable:
+        print("Maze cannot be solved")
+    else:
+        print(f"Maze solved in {maze_solve_time}")
     win.wait_for_close()
 
 main()

@@ -112,49 +112,112 @@ class Maze:
                 cell.visited = False
 
     #return True if current cell is end cell or leads to end cell
-    def _solve_r(self, i, j):
+    def _solve_r(self, i, j, method):
         self._animate()
         self._cells[i][j].visited = True
         if i == self._num_cols -1 and j == self._num_rows -1: #at end
              return True
-         
-        #decide which direction is free, always choose LRTB
-        if i > 0 and self._cells[i-1][j].visited == False and self._cells[i][j].has_left_wall == False:
-            #to_visit.append((i-1, j,'L'))
-            self._cells[i][j].draw_move(self._cells[i-1][j])
-            if self._solve_r(i-1,j):
-                return True
-            else:
-                self._cells[i][j].draw_move(self._cells[i-1][j],True)
-        #check R (East)
-        if i < self._num_cols-1 and self._cells[i+1][j].visited == False and self._cells[i][j].has_right_wall == False:
-            #to_visit.append((i+1,j,'R'))
-            self._cells[i][j].draw_move(self._cells[i+1][j])
-            if self._solve_r(i+1,j):
-                return True
-            else:
-                self._cells[i][j].draw_move(self._cells[i+1][j],True)
-        #check T (North)
-        if j > 0 and self._cells[i][j-1].visited == False and self._cells[i][j].has_top_wall == False:
-            #to_visit.append((i,j-1,'T'))
-            self._cells[i][j].draw_move(self._cells[i][j-1])
-            if self._solve_r(i,j-1):
-                return True
-            else:
-                self._cells[i][j].draw_move(self._cells[i][j-1],True)
-        #check B (South)
-        if j < self._num_rows-1 and self._cells[i][j+1].visited == False and self._cells[i][j].has_bottom_wall == False:
-            #to_visit.append((i,j+1,'B'))
-            self._cells[i][j].draw_move(self._cells[i][j+1])
-            if self._solve_r(i,j+1):
-                return True
-            else:
-                self._cells[i][j].draw_move(self._cells[i][j+1],True)
-        #no direction found
-        return False
+        if method is None:
+            method = "LRTB"
+        #decide which direction is free, default choose LRTB
+        if method.upper() == "LRTB":
+            #check L (West)
+            if i > 0 and self._cells[i-1][j].visited == False and self._cells[i][j].has_left_wall == False:
+                self._cells[i][j].draw_move(self._cells[i-1][j])
+                if self._solve_r(i-1,j,method):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i-1][j],True)
+            #check R (East)
+            if i < self._num_cols-1 and self._cells[i+1][j].visited == False and self._cells[i][j].has_right_wall == False:
+                self._cells[i][j].draw_move(self._cells[i+1][j])
+                if self._solve_r(i+1,j,method):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i+1][j],True)
+            #check T (North)
+            if j > 0 and self._cells[i][j-1].visited == False and self._cells[i][j].has_top_wall == False:
+                self._cells[i][j].draw_move(self._cells[i][j-1])
+                if self._solve_r(i,j-1,method):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i][j-1],True)
+            #check B (South)
+            if j < self._num_rows-1 and self._cells[i][j+1].visited == False and self._cells[i][j].has_bottom_wall == False:
+                self._cells[i][j].draw_move(self._cells[i][j+1])
+                if self._solve_r(i,j+1,method):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i][j+1],True)
+            #no direction found
+            return False
+        
+        if method.upper() == "RLBT":
+            #check R (East)
+            if i < self._num_cols-1 and self._cells[i+1][j].visited == False and self._cells[i][j].has_right_wall == False:
+                self._cells[i][j].draw_move(self._cells[i+1][j])
+                if self._solve_r(i+1,j,method):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i+1][j],True)
+            #check L (West)
+            if i > 0 and self._cells[i-1][j].visited == False and self._cells[i][j].has_left_wall == False:
+                self._cells[i][j].draw_move(self._cells[i-1][j])
+                if self._solve_r(i-1,j,method):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i-1][j],True)
+            #check B (South)
+            if j < self._num_rows-1 and self._cells[i][j+1].visited == False and self._cells[i][j].has_bottom_wall == False:
+                self._cells[i][j].draw_move(self._cells[i][j+1])
+                if self._solve_r(i,j+1,method):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i][j+1],True)
+            #check T (North)
+            if j > 0 and self._cells[i][j-1].visited == False and self._cells[i][j].has_top_wall == False:
+                self._cells[i][j].draw_move(self._cells[i][j-1])
+                if self._solve_r(i,j-1,method):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i][j-1],True)                    
+            #no direction found
+            return False
+
+        if method.upper() == "RAND":
+            while True:
+                available_path = []
+                #check R (East)
+                if i < self._num_cols-1 and self._cells[i+1][j].visited == False and self._cells[i][j].has_right_wall == False:
+                    available_path.append((i+1,j,'R'))
+                #check L (West)
+                if i > 0 and self._cells[i-1][j].visited == False and self._cells[i][j].has_left_wall == False:
+                    available_path.append((i-1, j,'L'))
+                #check B (South)
+                if j < self._num_rows-1 and self._cells[i][j+1].visited == False and self._cells[i][j].has_bottom_wall == False:
+                    available_path.append((i,j+1,'B'))
+                #check T (North)
+                if j > 0 and self._cells[i][j-1].visited == False and self._cells[i][j].has_top_wall == False:
+                    available_path.append((i,j-1,'T'))
+
+                if len(available_path) == 0: #no direction found
+                    return False
+            
+                direction = random.randrange(len(available_path))
+                next_cell = available_path[direction]
+
+                self._cells[i][j].draw_move(self._cells[next_cell[0]][next_cell[1]])
+
+                if self._solve_r(next_cell[0],next_cell[1],method):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[next_cell[0]][next_cell[1]],True)
+                
+                
     
-    def solve(self):
-        return self._solve_r(0,0)
+    def solve(self, method="LRTB"):
+        print(method)
+        return self._solve_r(0,0, method)
     
     def _animate(self):
         if self._win is None:
