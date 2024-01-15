@@ -51,3 +51,46 @@ class User_Input_App:
 #     root = tk.Tk()
 #     app = User_Input_App(root)
 #     root.wait_for_close()
+
+class GUIWithMenu:
+    def __init__(self,root):
+        self.root = root
+        self.root.title("GUI with Menu")
+        self.create_menu()
+
+        self.value = dict(h = None, w= None)
+
+    def create_menu(self):
+        menu_bar = tk.Menu(self.root)
+
+        file_menu = tk.Menu(menu_bar, tearoff=0)
+        file_menu.add_command(label="Exit", command=self.root.destroy)
+        menu_bar.add_cascade(label="File", menu=file_menu)
+
+        input_menu = tk.Menu(menu_bar,tearoff=0)
+        input_menu.add_command(label="Get Height",command=self.get_integer_h)
+        input_menu.add_command(label="Get Width",command=self.get_integer_w)
+        menu_bar.add_cascade(label="Maze Input", menu=input_menu)
+
+        self.root.config(menu=menu_bar)
+
+    def get_integer_h(self):
+        self.value['h'] = simpledialog.askinteger("Input","Enter Height:")
+        if self.value.get('h') is not None:
+            print(self.value.get('h'))
+            #return value_w
+    
+    def get_integer_w(self):
+        self.value['w'] = simpledialog.askinteger("Input","Enter Width:")
+        if self.value.get('w') is not None:
+            print(self.value.get('w'))
+            #return value_h
+        
+    def get_user_input(self):
+        return self.value
+    
+    def wait_for_close(self):
+        self.root.mainloop()
+    
+    def close(self):
+        self.root.destroy()

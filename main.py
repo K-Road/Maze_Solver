@@ -1,23 +1,25 @@
 from graphics import Window, Line, Point
 from cell import Cell
 from maze import Maze
-from gui_user_inputs import User_Input_App
+from gui_user_inputs import User_Input_App, GUIWithMenu
 import time
 import tkinter as tk
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = User_Input_App(root)
+    #app = User_Input_App(root)
+    app = GUIWithMenu(root)
+    app.wait_for_close()
     user_input = app.get_user_input()
-    root.destroy()
+    #root.destroy()
 
-def main():
+def main(user_input):
     
     #menu = User_Input_App()
     #h = app.get_user_input()
     print(user_input)
-    h = user_input[0]
-    w = user_input[1]
+    h = user_input.get('h')
+    w = user_input.get('w')
     #win = Window(800, 600)
     win = Window(h,w)
     x1 = 1
@@ -80,4 +82,4 @@ def main():
         print(f"Maze solved in {maze_solve_time}")
     win.wait_for_close()
 
-main()
+main(user_input)
