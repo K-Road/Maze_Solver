@@ -11,13 +11,11 @@ if __name__ == "__main__":
     app = GUIWithMenu(root)
     app.wait_for_close()
     user_input = app.get_user_input()
-    #root.destroy()
+    #root.destroy() #not needed, menu self destroys
 
 def main(user_input):
     
-    #menu = User_Input_App()
-    #h = app.get_user_input()
-    print(user_input)
+    print(user_input) ###DEBUG
     h = user_input.get('h')
     w = user_input.get('w')
     #win = Window(800, 600)
@@ -31,6 +29,7 @@ def main(user_input):
     cell_size_y = (win.height - 2 * margin) / num_rows
     #seed = 10
     method = None
+    method = user_input.get('method')
 
 
    

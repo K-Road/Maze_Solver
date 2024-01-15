@@ -56,6 +56,8 @@ class GUIWithMenu:
     def __init__(self,root):
         self.root = root
         self.root.title("GUI with Menu")
+        self.root.protocol("WM_DELETE_WINDOW", self.close)
+        self.canvas = Canvas(self.root, bg="white", width=250, height=250)
         self.create_menu()
 
         self.value = dict(h = None, w= None)
@@ -74,6 +76,15 @@ class GUIWithMenu:
 
         self.root.config(menu=menu_bar)
 
+        self.button = tk.Button(self.root,text="Method", command=self.get_method)
+        self.button.pack(pady=10)
+
+        self.button = tk.Button(self.root,text="Random", command=lambda: self.set_method("Random"))
+        self.button.pack(pady=10)
+
+        self.button = tk.Button(self.root,text="Launch", command=self.start)
+        self.button.pack(pady=10)
+
     def get_integer_h(self):
         self.value['h'] = simpledialog.askinteger("Input","Enter Height:")
         if self.value.get('h') is not None:
@@ -85,10 +96,23 @@ class GUIWithMenu:
         if self.value.get('w') is not None:
             print(self.value.get('w'))
             #return value_h
-        
+
+    def get_method(self):
+        self.value['method'] = simpledialog.askstring("Input","Enter pathing algorthym:")
+        if self.value.get('method') is not None:
+            print(self.value.get('method'))
+
+    def set_method(self,method):
+        self.value['method'] = method
+        self.start()
+
+
     def get_user_input(self):
         return self.value
     
+    def start(self):
+        self.close()
+
     def wait_for_close(self):
         self.root.mainloop()
     
