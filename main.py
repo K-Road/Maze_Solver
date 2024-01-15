@@ -1,13 +1,12 @@
 from graphics import Window, Line, Point
 from cell import Cell
 from maze import Maze
-from gui_user_inputs import User_Input_App, GUIWithMenu
+from gui_user_inputs import GUIWithMenu
 import time
 import tkinter as tk
 
 if __name__ == "__main__":
     root = tk.Tk()
-    #app = User_Input_App(root)
     app = GUIWithMenu(root)
     app.wait_for_close()
     user_input = app.get_user_input()
@@ -32,7 +31,6 @@ def main(user_input):
     method = user_input.get('method')
 
 
-   
     maze_create_start_time = time.time()
     m = Maze(margin,margin,num_rows, num_cols,cell_size_x,cell_size_y,win)
     maze_create_end_time = time.time()
