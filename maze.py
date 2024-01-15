@@ -91,8 +91,7 @@ class Maze:
                 self._draw_cell(i,j)
                 return
             
-            direction = random.randrange(len(to_visit))
-            next_cell = to_visit[direction]
+            next_cell = random.choice(to_visit)
 
             if next_cell[2] == 'L':
                 self._cells[i][j].has_left_wall = False
@@ -145,56 +144,39 @@ class Maze:
 
     def _solve_r_direction(self, i, j, method, delta_i, delta_j, has_wall_attr):
         new_i, new_j = i + delta_i, j + delta_j
-
         if (0 <= new_i < self._num_cols) and (0 <= new_j < self._num_rows) and not self._cells[new_i][new_j].visited and \
             not getattr(self._cells[i][j], has_wall_attr):
             
             self._cells[i][j].draw_move(self._cells[new_i][new_j])
-
             if self._solve_r(new_i,new_j,method):
                 return True
             else:
                 self._cells[i][j].draw_move(self._cells[new_i][new_j],True)
         return False
 
-
+    #Random
     def _solve_r_rand(self,i,j):
         self._animate()
         self._cells[i][j].visited = True
         if i == self._num_cols -1 and j == self._num_rows -1: #at end
-             return True   
+            return True   
+        directions = [(i + 1, j, "right"), (i - 1, j, "left"), (i, j + 1, "bottom"), (i, j - 1, "top")]
         #if method.upper() == "RAND":
         while True:
-            available_path = []
-            #check R (East)
-            if i < self._num_cols-1 and self._cells[i+1][j].visited == False and self._cells[i][j].has_right_wall == False:
-                available_path.append((i+1,j,'R'))
-            #check L (West)
-            if i > 0 and self._cells[i-1][j].visited == False and self._cells[i][j].has_left_wall == False:
-                available_path.append((i-1, j,'L'))
-            #check B (South)
-            if j < self._num_rows-1 and self._cells[i][j+1].visited == False and self._cells[i][j].has_bottom_wall == False:
-                available_path.append((i,j+1,'B'))
-            #check T (North)
-            if j > 0 and self._cells[i][j-1].visited == False and self._cells[i][j].has_top_wall == False:
-                available_path.append((i,j-1,'T'))
+            available_path = [(x, y, direction) for x, y, direction in directions
+                            if 0 <= x < self._num_cols and 0 <= y < self._num_rows and
+                            not self._cells[x][y].visited and not getattr(self._cells[i][j], f'has_{direction.lower()}_wall')]
 
-            if len(available_path) == 0: #no direction found
+            if not available_path: #no direction found
                 return False
         
-            direction = random.randrange(len(available_path))
-            next_cell = available_path[direction]
-
+            next_cell = random.choice(available_path)
             self._cells[i][j].draw_move(self._cells[next_cell[0]][next_cell[1]])
 
             if self._solve_r_rand(next_cell[0],next_cell[1]):
                 return True
-            else:
-                self._cells[i][j].draw_move(self._cells[next_cell[0]][next_cell[1]],True)
 
-
-
-
+            self._cells[i][j].draw_move(self._cells[next_cell[0]][next_cell[1]],True)
     
     def solve(self, method="LRTB"):
         print(method)
@@ -210,10 +192,3 @@ class Maze:
             return
         self._win.redraw()
         time.sleep(0.005)
-
-        
-            
-        
-
-
-    

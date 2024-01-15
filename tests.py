@@ -29,8 +29,8 @@ class Tests(unittest.TestCase):
         )
 
     def test_maze_reset_cells_visted(self):
-        num_cols = 50
-        num_rows = 50
+        num_cols = 30
+        num_rows = 30
         m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
         for col in m1._cells:
             for cell in col:
@@ -38,6 +38,17 @@ class Tests(unittest.TestCase):
                     cell.visited,
                     False,
                 )
+
+    def test_maze_solve_r_rand(self):
+        num_cols = 20
+        num_rows = 20
+        m1 = Maze(0,0,num_rows,num_cols,10,10)
+        m1.solve(method="RAND")
+    
+        self.assertEqual(
+            m1._cells[num_cols-1][num_rows-1].visited,
+            True,
+        )
 
 if __name__ == "__main__":
     unittest.main()
