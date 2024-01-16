@@ -5,9 +5,6 @@ from gui_user_inputs import GUIWithMenu
 import time
 import tkinter as tk
 
-
-    #root.destroy() #not needed, menu self destroys
-
 def main():
 
     print(user_input) ###DEBUG
@@ -15,8 +12,6 @@ def main():
     w = user_input.get('w')
     #win = Window(800, 600)
     win = Window(h,w)
-    x1 = 1
-    y1 = 1
     num_rows = 10  #44 max
     num_cols = 10 #44 max
     margin = 10
@@ -25,7 +20,6 @@ def main():
     #seed = 10
     method = None
     method = user_input.get('method')
-
 
     maze_create_start_time = time.time()
     m = Maze(margin,margin,num_rows, num_cols,cell_size_x,cell_size_y,win)
