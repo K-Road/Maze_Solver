@@ -6,6 +6,7 @@ class GUIWithMenu:
         self.root = root
         self.root.title("GUI with Menu")
         self.root.protocol("WM_DELETE_WINDOW", self.close)
+        self.running = False
         
         self.create_menu()
 
@@ -20,7 +21,33 @@ class GUIWithMenu:
 
         self.button_launch = tk.Button(self.root,text="Launch", command=self.start)
         self.button_launch.pack(pady=10)
+
+        self.buttons = []
+        self.buttons.append(tk.Button(self.root,text='Launch v2', command=self.start))
+        
+        self.input_fields = {'w':None,'h':None}
+        self.input_fields['w'] = tk.Entry(self.root)
+        self.input_fields['h'] = tk.Entry(self.root)
+        self.input_fields['w'].pack(pady=10)
+        self.input_fields['h'].pack(pady=10)
+        total_entry_height = 50# self.input_fields.winfo_reqheight() + 10
+        #for entry in self.input_fields:
+        #    entry.pack(pady=10)
+        #    total_entry_height += entry.winfo_reqheight() + 10
+
+        #for button in self.buttons:
+            
+
+        total_button_array_height = 0
+        
+        for button in self.buttons:
+            button.pack(pady=10)
+            total_button_array_height += button.winfo_reqheight() + 10
+
+
         total_button_height = sum(button.winfo_reqheight() + 10 for button in [self.button_method, self.button_launch, self.button_random])
+        total_button_height += total_button_array_height
+        total_button_height += total_entry_height
 
         canvas_height = total_button_height + 20
         self.canvas = Canvas(self.root, bg="white", width=250, height=canvas_height)
@@ -36,8 +63,8 @@ class GUIWithMenu:
         menu_bar.add_cascade(label="File", menu=file_menu)
 
         input_menu = tk.Menu(menu_bar,tearoff=0)
-        input_menu.add_command(label="Get Height",command=self.get_integer_h)
-        input_menu.add_command(label="Get Width",command=self.get_integer_w)
+      #  input_menu.add_command(label="Get Height",command=self.get_integer_h)
+      #  input_menu.add_command(label="Get Width",command=self.get_integer_w)
         menu_bar.add_cascade(label="Maze Input", menu=input_menu)
 
         self.root.config(menu=menu_bar)
@@ -74,9 +101,15 @@ class GUIWithMenu:
 
 
     def get_user_input(self):
-        return self.value
+        return self.value, self.running
+        
     
     def start(self):
+        self.value['h'] = int(self.input_fields['h'].get())
+        self.value['w'] = int(self.input_fields['w'].get())
+        if self.value['h'] is not None:
+            print(self.value['h'])
+        self.running = True
         self.close()
 
     def wait_for_close(self):

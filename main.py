@@ -5,15 +5,11 @@ from gui_user_inputs import GUIWithMenu
 import time
 import tkinter as tk
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = GUIWithMenu(root)
-    app.wait_for_close()
-    user_input = app.get_user_input()
+
     #root.destroy() #not needed, menu self destroys
 
-def main(user_input):
-    
+def main():
+
     print(user_input) ###DEBUG
     h = user_input.get('h')
     w = user_input.get('w')
@@ -79,4 +75,12 @@ def main(user_input):
         print(f"Maze solved in {maze_solve_time}")
     win.wait_for_close()
 
-main(user_input)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = GUIWithMenu(root)
+    app.wait_for_close()
+    user_input,status = app.get_user_input()
+
+if status == True:
+    main()
