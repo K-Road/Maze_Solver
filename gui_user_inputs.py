@@ -9,45 +9,43 @@ class GUIWithMenu:
         self.running = False
         
         self.create_menu()
+        self.buttons_dict = {}
 
-        self.label = tk.Label(self.root, text="Click to enter")
-        self.label.pack(pady=10)
+        self.label = tk.Label(self.root, text="Create Maze")
+        self.label.pack(pady=10, side='top')
 
         self.button_method = tk.Button(self.root,text="Method", command=self.get_method)
-        self.button_method.pack(pady=10)
+        self.button_method.pack(pady=5)
 
-        self.button_random = tk.Button(self.root,text="Random", command=lambda: self.set_method("Random"))
-        self.button_random.pack(pady=10)
+        self.buttons_dict['m-rand'] = tk.Button(self.root,text="Random", command=lambda: self.set_method("Random"))
+        #self.buttons_dict['m-rand'].pack(pady=10)
 
-        self.button_launch = tk.Button(self.root,text="Launch", command=self.start)
-        self.button_launch.pack(pady=10)
+        # self.button_launch = tk.Button(self.root,text="Launch", command=self.start)
+        # self.button_launch.pack(pady=10)
 
-        self.buttons = []
-        self.buttons.append(tk.Button(self.root,text='Launch v2', command=self.start))
-        
+        # button_texts = []
+        # button_texts.append("Launch v2")
+        #self.buttons.append(tk.Button(self.root,text='Launch v2', command=self.start))
+        self.buttons_dict['run'] = tk.Button(self.root,text='Launch v2', command=self.start)
+
+        for button in self.buttons_dict:
+            self.buttons_dict[button].pack(pady=5, side='top')
+    #      total_button_array_height += button.winfo_reqheight() + 10     
+   
         self.input_fields = {'h':None,'w':None}
 
         self.label_height = tk.Label(self.root, text="Height:")
-        self.label_height.pack(padx=5,pady=5, anchor='w')
-
         self.label_width = tk.Label(self.root, text="Width:")
-        self.label_width.pack(padx=5,pady=5, anchor='w')
-        
-        #self.label.pack(pady=10)
-        self.input_fields['h'] = tk.Entry(self.root)
-        #self.input_fields['h'].grid(row=0,column=1,padx=5,pady=5)
-        self.input_fields['w'] = tk.Entry(self.root)
-        #self.input_fields['w'].grid(row=1,column=1,padx=5,pady=5)
-        self.input_fields['h'].pack(padx=5,pady=55,side='left')
-        self.input_fields['w'].pack(padx=5,pady=55,side='right')
+        self.input_fields['h'] = tk.Entry(self.root,width=10)
+        self.input_fields['w'] = tk.Entry(self.root,width=10)
+        self.label_height.pack(padx=5,pady=5, side='left')
+        self.input_fields['h'].pack(padx=5,pady=0,side='left')
+        self.label_width.pack(padx=5,pady=5, side='left')
+        self.input_fields['w'].pack(padx=5,pady=0,side='left')
       #  total_entry_height = 50
             
       #  total_button_array_height = 0
         
-        for button in self.buttons:
-            button.pack(pady=20)
-      #      total_button_array_height += button.winfo_reqheight() + 10
-
 
        # total_button_height = sum(button.winfo_reqheight() + 10 for button in [self.button_method, self.button_launch, self.button_random])
        # total_button_height += total_button_array_height
